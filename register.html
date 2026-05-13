@@ -55,7 +55,7 @@ body { display:flex; flex-direction:column; min-height:100vh; }
         </label>
         <input type="radio" id="role-company" name="role" value="COMPANY" class="role-option" onchange="toggleCompanyFields()"/>
         <label for="role-company" class="role-label">
-          <span class="role-icon"></span>
+          <span class="role-icon">🏢</span>
           <strong>Company</strong>
           <span style="font-size:0.75rem">Looking for projects</span>
         </label>
@@ -134,13 +134,7 @@ body { display:flex; flex-direction:column; min-height:100vh; }
 
 <script src="main.js"></script>
 <script>
-// Detect API URL based on where frontend is served from
-const getAPIUrl = () => {
-  const host = window.location.hostname;
-  const port = '5000';
-  return `http://${host}:${port}/api/auth`;
-};
-const API_URL = getAPIUrl();
+const API_URL = "https://craftbase-production-f77a.up.railway.app/api/auth";
 
 function toggleCompanyFields() {
   const isCompany = document.getElementById('role-company').checked;
@@ -148,23 +142,23 @@ function toggleCompanyFields() {
 }
 
 async function doRegister() {
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const pass = document.getElementById('password').value;
-  const agreed = document.getElementById('agree').checked;
-  const role = document.querySelector('input[name="role"]:checked').value;
-  
-  if (!name || !email || !pass) { 
-    showToast('Please fill all required fields','error'); 
-    return; 
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const pass    = document.getElementById('password').value;
+  const agreed  = document.getElementById('agree').checked;
+  const role    = document.querySelector('input[name="role"]:checked').value;
+
+  if (!name || !email || !pass) {
+    showToast('Please fill all required fields', 'error');
+    return;
   }
-  if (pass.length < 8) { 
-    showToast('Password must be at least 8 characters','error'); 
-    return; 
+  if (pass.length < 8) {
+    showToast('Password must be at least 8 characters', 'error');
+    return;
   }
-  if (!agreed) { 
-    showToast('Please agree to the Terms of Use','error'); 
-    return; 
+  if (!agreed) {
+    showToast('Please agree to the Terms of Use', 'error');
+    return;
   }
 
   try {
@@ -173,25 +167,26 @@ async function doRegister() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password: pass, role })
     });
-    
+
     const data = await response.json();
-    
+
     if (!response.ok) {
-      showToast(`${data.message || 'Registration failed'}`, 'error');
+      showToast(`${data.message || 'Registration failed. Please try again.'}`, 'error');
       console.error('Registration failed:', data);
       return;
     }
-    
+
     // Store token and user data
     localStorage.setItem('craftbase_token', data.token);
     Auth.login(data.user);
     showToast('Account created successfully! Welcome to CraftBase.', 'success');
-    
+
     setTimeout(() => {
       window.location.href = role === 'COMPANY' ? 'dashboard-company.html' : 'dashboard-user.html';
     }, 1000);
+
   } catch (err) {
-    showToast('Connection error. Make sure the server is running on port 5000.', 'error');
+    showToast('Could not connect to server. Please try again later.', 'error');
     console.error('Registration error:', err);
   }
 }
