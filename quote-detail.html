@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quote Detail — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.page-header { padding:36px 0 28px; border-bottom:1px solid var(--border); background:var(--bg2); }
+.response-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:22px;
+  transition:all var(--transition);
+}
+.response-card.selected { border-color:var(--accent); background:var(--surface2); }
+.company-mini { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.company-mini .logo { width:42px; height:42px; border-radius:var(--radius); background:var(--surface2); border:1px solid var(--border); display:flex;align-items:center;justify-content:center;font-size:1.2rem; }
+.price-estimate { font-family:var(--font-display); font-size:1.8rem; color:var(--accent); }
+.days-estimate { font-family:var(--font-mono); font-size:0.85rem; color:var(--text2); }
+.accept-btn { background:var(--green); color:#fff; }
+.accept-btn:hover { background:#27ae60; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="quotes.html" class="nav-link active">Quotes</a>
+    </div>
+    <div class="nav-actions">
+      <a href="quotes.html" class="btn btn-ghost btn-sm">← All Quotes</a>
+      <div class="nav-avatar" id="nav-avatar" style="display:none"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:0.82rem;color:var(--text3);margin-bottom:10px"><a href="quotes.html" style="color:var(--text3)">Quotes</a> › Project Detail</div>
+        <h1 style="font-size:1.8rem">Residential 3-Bedroom House Build</h1>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:10px">
+          <span style="font-size:0.85rem;color:var(--text2)">📍 Rawalpindi</span>
+          <span style="font-size:0.85rem;color:var(--text2)">🏷️ Residential</span>
+          <span style="font-size:0.85rem;color:var(--text2)">PKR 5M – 8M</span>
+          <span style="font-size:0.85rem;color:var(--text2)">⏱ 6 months</span>
+          <span style="font-size:0.82rem;color:var(--text3);font-family:var(--font-mono)">Posted Feb 1, 2026</span>
+        </div>
+      </div>
+      <span class="badge badge-green" style="font-size:0.85rem;padding:6px 14px">● OPEN</span>
+    </div>
+  </div>
+</div>
+
+<section class="section-sm">
+  <div class="container">
+    <div class="layout-sidebar" style="grid-template-columns:1fr 320px">
+      <div>
+        <!-- Description -->
+        <div class="card" style="margin-bottom:24px">
+          <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:12px">Project Description</h4>
+          <p>Looking for a contractor to build a 3-bedroom, 2-bathroom home. Architect drawings are available. The project requires full construction from foundation to handover including electrical, plumbing, and finishing.</p>
+          <p style="margin-top:10px">The site is a 5 marla plot in Phase 2. Soil testing has been done. We want quality materials — no compromises on foundation and structure.</p>
+        </div>
+
+        <!-- Responses -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h4 style="font-family:var(--font-body);font-weight:700">Company Responses (4)</h4>
+          <span class="mono" style="color:var(--text3);font-size:0.78rem">Sorted: Lowest Price</span>
+        </div>
+
+        <div id="accepted-notice" class="alert alert-success" style="display:none;margin-bottom:20px">
+          You have accepted Apex Construction Group. Project status is now HIRED.
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px" id="responses"></div>
+      </div>
+
+      <!-- Right: Project owner actions -->
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="sidebar-title">My Project</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:0.82rem;color:var(--text2)">Status</span>
+              <span class="badge badge-green">Open</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:0.82rem;color:var(--text2)">Responses</span>
+              <span style="font-family:var(--font-mono);font-size:0.85rem">4</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:0.82rem;color:var(--text2)">Views</span>
+              <span style="font-family:var(--font-mono);font-size:0.85rem">48</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <button class="btn btn-danger btn-full btn-sm" onclick="closeRequest()">Close Request</button>
+        </div>
+        <div class="card">
+          <div class="sidebar-title">How to Choose</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:0.82rem;color:var(--text2)">Compare prices and timelines</div>
+            <div style="font-size:0.82rem;color:var(--text2)">Check company badges and ratings</div>
+            <div style="font-size:0.82rem;color:var(--text2)">Read their message carefully</div>
+            <div style="font-size:0.82rem;color:var(--text2)">Once you accept, others are auto-rejected</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 CraftBase</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+const responses = [
+  { id:1, company:SAMPLE.companies[0], message:"We have reviewed the project requirements and are confident in delivering a premium 3-bedroom home within your budget. Our team has completed 15+ similar projects in Rawalpindi this year. We include all structural, plumbing, electrical, and finishing works.", price:6500000, days:165, rating:4.8, badges:['top_rated','verified'] },
+  { id:2, company:SAMPLE.companies[1], message:"We specialize in residential construction and can complete this project within your timeline. Our quote includes all materials per architect drawings. We offer a 2-year structural warranty.", price:5800000, days:180, rating:4.6, badges:['fast_responder','verified'] },
+  { id:3, company:{name:'ProBuild Contractors', logo:'<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="probuild-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f39c12;stop-opacity:1"/><stop offset="100%" style="stop-color:#e67e22;stop-opacity:1"/></linearGradient></defs><rect width="64" height="64" fill="url(#probuild-grad)" rx="8"/><rect x="8" y="16" width="48" height="32" fill="none" stroke="white" stroke-width="3"/><line x1="8" y1="28" x2="56" y2="28" stroke="white" stroke-width="2"/><circle cx="16" cy="24" r="2" fill="white"/><circle cx="32" cy="24" r="2" fill="white"/><circle cx="48" cy="24" r="2" fill="white"/></svg>', avgRating:4.2, totalReviews:28, badges:[]}, message:"Competitive pricing for quality work. We have PEC-certified engineers on staff and can begin within 2 weeks of contract signing.", price:5200000, days:200, rating:4.2, badges:[] },
+  { id:4, company:{name:'Horizon Builders', logo:'<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="horizon-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1abc9c;stop-opacity:1"/><stop offset="100%" style="stop-color:#16a085;stop-opacity:1"/></linearGradient></defs><rect width="64" height="64" fill="url(#horizon-grad)" rx="8"/><line x1="8" y1="48" x2="56" y2="48" stroke="white" stroke-width="4"/><polygon points="32,8 52,44 12,44" fill="none" stroke="white" stroke-width="3"/><line x1="32" y1="24" x2="32" y2="44" stroke="white" stroke-width="2"/></svg>', avgRating:4.5, totalReviews:42, badges:['rising_star']}, message:"We are a growing company offering best-in-class service. Our team has delivered 20+ projects in the last 18 months with excellent feedback.", price:7200000, days:150, rating:4.5, badges:['rising_star'] },
+];
+
+let acceptedId = null;
+
+function acceptResponse(id) {
+  acceptedId = id;
+  document.getElementById('accepted-notice').style.display = 'flex';
+  renderResponses();
+  showToast('Company accepted! Others have been notified.', 'success');
+}
+
+function renderResponses() {
+  const badgeLabels = {top_rated:'Top Rated',fast_responder:'Fast',most_hired:'Most Hired',rising_star:'Rising Star',verified:'Verified'};
+  document.getElementById('responses').innerHTML = responses.map(r => {
+    const isAccepted = acceptedId === r.id;
+    const isRejected = acceptedId && acceptedId !== r.id;
+    return `
+    <div class="response-card ${isAccepted ? 'selected' : ''}" style="${isRejected ? 'opacity:0.4' : ''}">
+      <div class="company-mini">
+        <div class="logo">${r.company.logo || ''}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:0.95rem">${r.company.name}</div>
+          <div style="display:flex;gap:6px;margin-top:4px">
+            <span style="font-size:0.78rem;color:var(--accent)">★ ${r.company.avgRating}</span>
+            <span style="font-size:0.78rem;color:var(--text3)">(${r.company.totalReviews} reviews)</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          ${isAccepted ? '<span class="badge badge-green">✅ Accepted</span>' : ''}
+          ${isRejected ? '<span class="badge badge-gray">Rejected</span>' : ''}
+        </div>
+      </div>
+      ${r.company.badges?.length ? `<div style="display:flex;gap:6px;margin-bottom:12px">${r.company.badges.map(b => `<span class="badge-chip">${badgeLabels[b]||''} ${b.replace(/_/g,' ')}</span>`).join('')}</div>` : ''}
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:16px;line-height:1.6">${r.message}</p>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div>
+          <div class="price-estimate">PKR ${(r.price/1000000).toFixed(1)}M</div>
+          <div class="days-estimate">Est. ${r.days} days · ~${Math.ceil(r.days/30)} months</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="company-profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+          ${!acceptedId ? `<button class="btn accept-btn btn-sm" onclick="acceptResponse(${r.id})">Accept This Quote →</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function closeRequest() {
+  showToast('Request closed. No further responses will be accepted.', 'warn');
+}
+
+renderResponses();
+</script>
+</body>
+</html>

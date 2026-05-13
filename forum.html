@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Community Forum — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.page-header { padding:40px 0 32px; border-bottom:1px solid var(--border); background:var(--bg2); }
+.category-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.category-pill {
+  padding:6px 16px; border-radius:99px; font-size:0.82rem; font-weight:600; cursor:pointer;
+  background:var(--surface); border:1px solid var(--border); color:var(--text2);
+  transition:all var(--transition);
+}
+.category-pill:hover, .category-pill.active { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="companies.html" class="nav-link">Companies</a>
+      <a href="quotes.html" class="nav-link">Quotes</a>
+      <a href="forum.html" class="nav-link active">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-secondary btn-sm" id="nav-login">Log In</a>
+      <a href="forum-new.html" class="btn btn-primary btn-sm">+ New Thread</a>
+      <div class="nav-avatar" id="nav-avatar" style="display:none"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="section-label">Community</div>
+        <h1 style="font-size:2.2rem">Discussion Forum</h1>
+        <p style="color:var(--text2);margin-top:6px">Ask questions, share experiences, and connect with the construction community</p>
+      </div>
+      <a href="forum-new.html" class="btn btn-primary">+ Start Discussion</a>
+    </div>
+  </div>
+</div>
+
+<section class="section-sm">
+  <div class="container">
+    <div class="layout-sidebar">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-title">Categories</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div class="dash-nav-item active" onclick="filterCategory('')">🌐 All Discussions</div>
+          <div class="dash-nav-item" onclick="filterCategory('general')">General</div>
+          <div class="dash-nav-item" onclick="filterCategory('roofing')">Roofing</div>
+          <div class="dash-nav-item" onclick="filterCategory('budget')">Budget & Pricing</div>
+          <div class="dash-nav-item" onclick="filterCategory('legal')">Legal & Contracts</div>
+          <div class="dash-nav-item" onclick="filterCategory('renovation')">Renovation</div>
+        </div>
+        <div class="divider"></div>
+        <div class="sidebar-title">Community Stats</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--text2)">Total Threads</span><span class="mono" style="font-size:0.82rem">284</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--text2)">This Week</span><span class="mono" style="font-size:0.82rem;color:var(--green)">+12</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:0.82rem;color:var(--text2)">Active Members</span><span class="mono" style="font-size:0.82rem">1,840</span></div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-size:0.85rem;color:var(--text3)" id="results-count">4 discussions</div>
+          <select class="sort-select" id="sort" onchange="renderThreads()">
+            <option value="newest">Newest First</option>
+            <option value="top">Top Upvoted</option>
+            <option value="replies">Most Replies</option>
+          </select>
+        </div>
+
+        <div id="threads-list" style="display:flex;flex-direction:column;gap:12px"></div>
+
+        <div class="pagination" style="margin-top:32px">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 CraftBase</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+let activeCategory = '';
+const categoryIcons = { general:'Msg', roofing:'Roofing', budget:'Budget', legal:'Legal', renovation:'Renovation' };
+
+function filterCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.dash-nav-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  renderThreads();
+}
+
+function toggleUpvote(id, btn) {
+  const counter = btn.nextElementSibling;
+  if (btn.dataset.voted) {
+    delete btn.dataset.voted;
+    counter.textContent = parseInt(counter.textContent) - 1;
+    btn.style.color = '';
+  } else {
+    btn.dataset.voted = '1';
+    counter.textContent = parseInt(counter.textContent) + 1;
+    btn.style.color = 'var(--accent)';
+  }
+}
+
+function renderThreads() {
+  const sort = document.getElementById('sort').value;
+  let threads = SAMPLE.threads.filter(t => !activeCategory || t.category === activeCategory);
+
+  if (sort === 'newest') threads.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+  else if (sort === 'top') threads.sort((a,b) => b.upvotes - a.upvotes);
+  else threads.sort((a,b) => b.replies - a.replies);
+
+  document.getElementById('results-count').textContent = `${threads.length} discussions`;
+  document.getElementById('threads-list').innerHTML = threads.map(t => `
+    <div class="thread-card">
+      <div class="thread-votes">
+        <button class="vote-btn" onclick="toggleUpvote(${t.id}, this)">▲</button>
+        <div class="vote-count">${t.upvotes}</div>
+      </div>
+      <div style="flex:1">
+        <a href="forum-thread.html" style="text-decoration:none">
+          <div class="thread-title">${t.title}</div>
+          <div class="thread-preview">${t.body}</div>
+        </a>
+        <div class="thread-footer">
+          <span class="badge badge-gray">${categoryIcons[t.category]||'💬'} ${t.category}</span>
+          <span class="thread-meta">${t.replies} replies</span>
+          <span class="thread-meta">👤 ${t.user}</span>
+          <span class="thread-meta">${new Date(t.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+renderThreads();
+</script>
+</body>
+</html>

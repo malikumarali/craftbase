@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+body { display:flex; flex-direction:column; min-height:100vh; }
+.auth-page { flex:1; display:flex; align-items:center; justify-content:center; padding: 40px 20px; }
+.auth-wrap { display:grid; grid-template-columns:1fr 1fr; max-width:900px; width:100%; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-lg); }
+.auth-side {
+  background: linear-gradient(160deg, var(--bg3) 0%, var(--surface) 100%);
+  padding: 48px 40px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.auth-side::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(42,51,72,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,51,72,0.5) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+.auth-side-logo { font-family:var(--font-display); font-size:2rem; letter-spacing:0.08em; position:relative; }
+.auth-side-logo span { color:var(--accent); }
+.auth-side-tagline { font-size:1.6rem; font-family:var(--font-display); line-height:1.2; position:relative; }
+.auth-side-tagline em { color:var(--accent); font-style:normal; }
+.auth-side-points { display:flex; flex-direction:column; gap:12px; position:relative; }
+.auth-point { display:flex; align-items:center; gap:10px; font-size:0.85rem; color:var(--text2); }
+.auth-form-area { padding: 48px 40px; }
+.auth-form-area h2 { font-size:1.6rem; margin-bottom:6px; }
+.auth-form-area p { font-size:0.85rem; color:var(--text2); margin-bottom:28px; }
+.role-selector { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px; }
+.role-option { display:none; }
+.role-label {
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  padding:14px 10px; border:2px solid var(--border); border-radius:var(--radius);
+  cursor:pointer; text-align:center; transition:all var(--transition);
+  font-size:0.82rem; color:var(--text2);
+}
+.role-label .role-icon { font-size:1.6rem; }
+.role-option:checked + .role-label { border-color:var(--accent); background:var(--accent-dim); color:var(--accent); }
+.divider-text { display:flex; align-items:center; gap:12px; color:var(--text3); font-size:0.8rem; margin:20px 0; }
+.divider-text::before, .divider-text::after { content:''; flex:1; height:1px; background:var(--border); }
+@media(max-width:640px){.auth-wrap{grid-template-columns:1fr;}.auth-side{display:none;}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-actions">
+      <span style="font-size:0.85rem;color:var(--text2)">No account?</span>
+      <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-wrap">
+    <!-- Side panel -->
+    <div class="auth-side">
+      <a href="index.html" class="auth-side-logo">Craft<span>Base</span></a>
+      <div class="auth-side-tagline">Build Trust.<br><em>Build Better.</em></div>
+      <div class="auth-side-points">
+        <div class="auth-point">✅ Verified company profiles</div>
+        <div class="auth-point">📊 Transparent reviews after every hire</div>
+        <div class="auth-point">⚡ Get quotes within 24 hours</div>
+        <div class="auth-point">🏆 Trust badges based on real data</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="auth-form-area">
+      <h2>Welcome Back</h2>
+      <p>Sign in to your CraftBase account</p>
+
+      <div id="error-msg" class="alert alert-error" style="display:none;margin-bottom:20px">
+        ⚠ Invalid email or password.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="input-group">
+          <span class="input-icon">✉</span>
+          <input type="email" id="email" placeholder="you@example.com"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" placeholder="Your password"/>
+        </div>
+        <div style="text-align:right;margin-top:4px">
+          <a href="#" style="font-size:0.8rem;color:var(--accent)">Forgot password?</a>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="doLogin()" style="margin-top:4px">Sign In</button>
+
+      <div class="divider-text">Demo Logins</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <button class="btn btn-secondary btn-sm" onclick="quickLogin('USER')">As User</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickLogin('COMPANY')">As Company</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickLogin('ADMIN')">As Admin</button>
+      </div>
+
+      <p style="text-align:center;margin-top:24px;font-size:0.85rem">
+        Don't have an account? <a href="register.html" style="color:var(--accent);font-weight:600">Create one →</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+// Detect API URL based on where frontend is served from
+const getAPIUrl = () => {
+  const host = window.location.hostname;
+  const port = '5000';
+  return `http://${host}:${port}/api/auth`;
+};
+const API_URL = getAPIUrl();
+
+async function doLogin() {
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('password').value;
+  const errorEl = document.getElementById('error-msg');
+  
+  if (!email || !pass) {
+    errorEl.textContent = '⚠ Please enter email and password.';
+    errorEl.style.display = 'flex';
+    return;
+  }
+  
+  try {
+    errorEl.style.display = 'none';
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      errorEl.textContent = `⚠ ${data.message || 'Login failed'}`;
+      errorEl.style.display = 'flex';
+      console.error('Login failed:', data);
+      return;
+    }
+    
+    // Store token and user data
+    localStorage.setItem('craftbase_token', data.token);
+    Auth.login(data.user);
+    showToast('Logged in successfully!', 'success');
+    
+    const redirects = { USER: 'dashboard-user.html', COMPANY: 'dashboard-company.html', ADMIN: 'dashboard-user.html' };
+    setTimeout(() => window.location.href = redirects[data.user.role] || 'dashboard-user.html', 800);
+  } catch (err) {
+    errorEl.textContent = '⚠ Connection error. Make sure the server is running on port 5000.';
+    errorEl.style.display = 'flex';
+    console.error('Login error:', err);
+  }
+}
+
+async function quickLogin(role) {
+  const demos = {
+    USER: { email: 'ahmed@example.com', password: 'password123' },
+    COMPANY: { email: 'apex@example.com', password: 'password123' },
+    ADMIN: { email: 'admin@example.com', password: 'password123' }
+  };
+  
+  const creds = demos[role];
+  if (!creds) return;
+  
+  document.getElementById('email').value = creds.email;
+  document.getElementById('password').value = creds.password;
+  doLogin();
+}
+</script>
+</body>
+</html>

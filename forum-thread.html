@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Forum Thread — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.page-header { padding:36px 0 28px; border-bottom:1px solid var(--border); background:var(--bg2); }
+.reply-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; margin-bottom:12px; }
+.reply-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.reply-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; flex-shrink:0; }
+.reply-name { font-size:0.88rem; font-weight:600; }
+.reply-date { font-size:0.76rem; color:var(--text3); }
+.reply-body { font-size:0.88rem; color:var(--text2); line-height:1.7; }
+.company-reply { border-color:var(--accent); background:rgba(245,166,35,0.04); }
+.company-badge-inline { font-size:0.72rem; background:var(--accent-dim); color:var(--accent); padding:2px 7px; border-radius:4px; border:1px solid rgba(245,166,35,0.2); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="forum.html" class="nav-link active">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="forum.html" class="btn btn-ghost btn-sm">← Back to Forum</a>
+      <div class="nav-avatar" id="nav-avatar" style="display:none"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div style="font-size:0.82rem;color:var(--text3);margin-bottom:12px">
+      <a href="forum.html" style="color:var(--text3)">Forum</a> › General
+    </div>
+    <h1 style="font-size:1.7rem;max-width:800px">Best materials for earthquake-resistant homes in Pakistan?</h1>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;align-items:center">
+      <span class="badge badge-gray">General</span>
+      <span style="font-size:0.82rem;color:var(--text2)">👤 Ahmed K.</span>
+      <span style="font-size:0.82rem;color:var(--text2)">📅 Feb 12, 2026</span>
+      <span style="font-size:0.82rem;color:var(--accent)">▲ 28 upvotes</span>
+      <span style="font-size:0.82rem;color:var(--text2)">12 replies</span>
+    </div>
+  </div>
+</div>
+
+<section class="section-sm">
+  <div class="container">
+    <div class="layout-sidebar" style="grid-template-columns:1fr 280px">
+      <!-- Thread + Replies -->
+      <div>
+        <!-- Original post -->
+        <div class="card" style="margin-bottom:28px">
+          <p style="font-size:0.95rem;line-height:1.8;color:var(--text2)">
+            We are planning to build a 2-storey home in a seismic zone 3 area near Muzaffarabad. The architect has recommended reinforced concrete frame (RCC) but our contractor is suggesting we could save money by using load-bearing brickwork for the upper floor.
+          </p>
+          <p style="font-size:0.95rem;line-height:1.8;color:var(--text2);margin-top:12px">
+            I am worried because of 2005 earthquake memory. What materials and structural approaches should we absolutely insist on with the contractor? Are there specific PEC guidelines for this?
+          </p>
+          <div style="margin-top:18px;display:flex;gap:10px">
+            <button class="btn btn-ghost btn-sm">▲ Upvote (28)</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('reply-box').scrollIntoView({behavior:'smooth'})">Reply</button>
+          </div>
+        </div>
+
+        <!-- Replies -->
+        <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:16px">12 Replies</h4>
+
+        <div class="reply-card">
+          <div class="reply-header">
+            <div class="reply-avatar" style="background:var(--blue-dim);color:var(--blue)">S</div>
+            <div>
+              <div class="reply-name">Sara M.</div>
+              <div class="reply-date">Feb 13, 2026</div>
+            </div>
+          </div>
+          <div class="reply-body">RCC frame is absolutely the right call for Zone 3. Do NOT let the contractor cut corners here. The 2005 earthquake was devastating specifically because of load-bearing masonry failures. Get a structural engineer to sign off on the design — this is mandatory under PEC regulations for Zone 3.</div>
+          <div style="margin-top:10px"><button class="btn btn-ghost btn-sm">▲ 15</button></div>
+        </div>
+
+        <div class="reply-card company-reply">
+          <div class="reply-header">
+            <div class="logo" style="width:40px;height:40px;flex-shrink:0" id="apex-forum-logo"></div>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="reply-name">Apex Construction Group</div>
+                <span class="company-badge-inline">Company</span>
+                <span class="company-badge-inline">✅ Verified</span>
+              </div>
+              <div class="reply-date">Feb 13, 2026</div>
+            </div>
+          </div>
+          <div class="reply-body">
+            Great question. As a PEC-registered firm, here is what we recommend for Zone 3:<br><br>
+            1. <strong style="color:var(--text)">RCC Frame only</strong> — never load-bearing masonry above ground floor in Zone 3+<br>
+            2. <strong style="color:var(--text)">Grade 60 rebar</strong> (not Grade 40) for all columns and beams<br>
+            3. <strong style="color:var(--text)">M25 concrete mix</strong> minimum for structural elements<br>
+            4. <strong style="color:var(--text)">Shear walls</strong> at key locations per structural engineer design<br>
+            5. Always get an independent structural engineer — not just rely on the contractor's team<br><br>
+            We have delivered 15+ Zone 3 projects. Happy to share our structural checklist via DM.
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+            <button class="btn btn-ghost btn-sm">▲ 22</button>
+            <a href="company-profile.html" class="btn btn-outline btn-sm">View Profile</a>
+          </div>
+        </div>
+
+        <div class="reply-card">
+          <div class="reply-header">
+            <div class="reply-avatar" style="background:var(--green-dim);color:var(--green)">T</div>
+            <div>
+              <div class="reply-name">Tariq F.</div>
+              <div class="reply-date">Feb 14, 2026</div>
+            </div>
+          </div>
+          <div class="reply-body">Also make sure your contractor provides column and beam drawings stamped by a licensed structural engineer. Do not accept verbal assurances. Get everything in writing before you sign the contract.</div>
+          <div style="margin-top:10px"><button class="btn btn-ghost btn-sm">▲ 9</button></div>
+        </div>
+
+        <!-- Reply form -->
+        <div id="reply-box" class="card" style="margin-top:24px">
+          <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:16px">Post a Reply</h4>
+          <div class="form-group">
+            <textarea id="reply-text" rows="4" placeholder="Share your knowledge or experience..."></textarea>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:12px">
+            <button class="btn btn-ghost" onclick="document.getElementById('reply-text').value=''">Clear</button>
+            <button class="btn btn-primary" onclick="postReply()">Post Reply →</button>
+          </div>
+        </div>
+
+        <div id="new-replies"></div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="sidebar-title">About Poster</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div class="nav-avatar" style="width:40px;height:40px">A</div>
+            <div>
+              <div style="font-weight:600;font-size:0.9rem">Ahmed K.</div>
+              <div style="font-size:0.78rem;color:var(--text3)">Member since Jan 2025</div>
+            </div>
+          </div>
+          <div style="font-size:0.82rem;color:var(--text2)">3 threads · 14 replies</div>
+        </div>
+
+        <div class="card">
+          <div class="sidebar-title">Related Threads</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <a href="forum-thread.html" style="font-size:0.82rem;color:var(--text2);line-height:1.4">How to avoid contractor scams — my experience</a>
+            <a href="forum-thread.html" style="font-size:0.82rem;color:var(--text2);line-height:1.4">Average cost per sqft in Islamabad 2026?</a>
+            <a href="forum-thread.html" style="font-size:0.82rem;color:var(--text2);line-height:1.4">PEC license verification — how to check?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 CraftBase</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+function postReply() {
+  const text = document.getElementById('reply-text').value.trim();
+  if (!text) { showToast('Please write something first', 'error'); return; }
+  const user = Auth.user || { name: 'Guest' };
+  const initial = user.name.charAt(0).toUpperCase();
+  const el = document.createElement('div');
+  el.className = 'reply-card animate-fadeUp';
+  el.innerHTML = `
+    <div class="reply-header">
+      <div class="reply-avatar" style="background:var(--accent-dim);color:var(--accent)">${initial}</div>
+      <div><div class="reply-name">${user.name}</div><div class="reply-date">Just now</div></div>
+    </div>
+    <div class="reply-body">${text}</div>
+    <div style="margin-top:10px"><button class="btn btn-ghost btn-sm">▲ 0</button></div>`;
+  document.getElementById('new-replies').appendChild(el);
+  document.getElementById('reply-text').value = '';
+  showToast('Reply posted!', 'success');
+}
+
+// Inject company logo into forum thread
+document.addEventListener('DOMContentLoaded', () => {
+  const apexCompany = SAMPLE.companies[0];
+  const logoEl = document.getElementById('apex-forum-logo');
+  if (logoEl && apexCompany.logo) {
+    logoEl.innerHTML = apexCompany.logo;
+  }
+});
+</script>
+</body>
+</html>

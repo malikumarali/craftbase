@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Browse Quotes — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.page-header { padding:40px 0 32px; border-bottom:1px solid var(--border); background:var(--bg2); }
+.quote-status-open { background:var(--green-dim); color:var(--green); }
+.quote-status-hired { background:var(--accent-dim); color:var(--accent); }
+.quote-status-closed { background:rgba(90,100,128,0.2); color:var(--text3); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="companies.html" class="nav-link">Companies</a>
+      <a href="quotes.html" class="nav-link active">Quotes</a>
+      <a href="forum.html" class="nav-link">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-secondary btn-sm" id="nav-login">Log In</a>
+      <a href="quote-new.html" class="btn btn-primary btn-sm">+ Post Project</a>
+      <div class="nav-avatar" id="nav-avatar" style="display:none"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="section-label">Open Projects</div>
+        <h1 style="font-size:2.2rem">Quote Requests</h1>
+        <p style="color:var(--text2);margin-top:6px">Browse active projects looking for your expertise</p>
+      </div>
+      <a href="quote-new.html" class="btn btn-primary">+ Post Your Project</a>
+    </div>
+  </div>
+</div>
+
+<section class="section-sm">
+  <div class="container">
+    <div class="layout-sidebar">
+      <!-- Filters -->
+      <div class="sidebar">
+        <div class="sidebar-title">Filter Requests</div>
+        <div class="filter-group">
+          <div class="filter-label">Location</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="loc" value="" checked onchange="applyFilters()"> All Cities</label>
+            <label class="filter-option"><input type="radio" name="loc" value="Rawalpindi" onchange="applyFilters()"> Rawalpindi</label>
+            <label class="filter-option"><input type="radio" name="loc" value="Islamabad" onchange="applyFilters()"> Islamabad</label>
+            <label class="filter-option"><input type="radio" name="loc" value="Lahore" onchange="applyFilters()"> Lahore</label>
+            <label class="filter-option"><input type="radio" name="loc" value="Karachi" onchange="applyFilters()"> Karachi</label>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="filter-group">
+          <div class="filter-label">Project Type</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="type" value="" checked onchange="applyFilters()"> All Types</label>
+            <label class="filter-option"><input type="radio" name="type" value="residential" onchange="applyFilters()"> Residential</label>
+            <label class="filter-option"><input type="radio" name="type" value="commercial" onchange="applyFilters()"> Commercial</label>
+            <label class="filter-option"><input type="radio" name="type" value="renovation" onchange="applyFilters()"> Renovation</label>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="filter-group">
+          <div class="filter-label">Status</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="status" value="" checked onchange="applyFilters()"> All</label>
+            <label class="filter-option"><input type="radio" name="status" value="OPEN" onchange="applyFilters()"> Open</label>
+            <label class="filter-option"><input type="radio" name="status" value="HIRED" onchange="applyFilters()"> Hired</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div style="font-size:0.85rem;color:var(--text3)" id="results-count">3 projects found</div>
+          <select class="sort-select" id="sort" onchange="applyFilters()">
+            <option value="newest">Newest First</option>
+            <option value="budget">Highest Budget</option>
+            <option value="responses">Most Responses</option>
+          </select>
+        </div>
+        <div id="quotes-list" style="display:flex;flex-direction:column;gap:16px"></div>
+        <div class="pagination" style="margin-top:32px">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 CraftBase</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+function renderQuoteCard(q) {
+  const statusClass = { OPEN:'quote-status-open', HIRED:'quote-status-hired', CLOSED:'quote-status-closed' };
+  const budgetStr = q.budgetMin && q.budgetMax ? `PKR ${Number(q.budgetMin/1000).toFixed(0)}K – ${Number(q.budgetMax/1000).toFixed(0)}K` : 'Flexible';
+  return `
+  <a href="quote-detail.html" style="text-decoration:none">
+    <div class="quote-card">
+      <div class="quote-status">
+        <span class="badge ${statusClass[q.status]}">${q.status}</span>
+        <span class="mono" style="font-size:0.72rem">${new Date(q.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+      </div>
+      <div class="quote-title">${q.title}</div>
+      <p style="font-size:0.84rem;color:var(--text3);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${q.description}</p>
+      <div class="quote-meta">
+        <div class="quote-meta-item">📍 ${q.location}</div>
+        <div class="quote-meta-item">🏷️ ${q.projectType}</div>
+        <div class="quote-meta-item">💰 ${budgetStr}</div>
+        <div class="quote-meta-item">⏱ ${q.timeline}</div>
+        <div class="quote-meta-item" style="color:var(--accent)">💬 ${q.responses} responses</div>
+      </div>
+    </div>
+  </a>`;
+}
+
+function applyFilters() {
+  const loc = document.querySelector('input[name="loc"]:checked').value;
+  const type = document.querySelector('input[name="type"]:checked').value;
+  const status = document.querySelector('input[name="status"]:checked').value;
+  const sort = document.getElementById('sort').value;
+
+  let results = SAMPLE.quotes.filter(q => {
+    if (loc && q.location !== loc) return false;
+    if (type && q.projectType !== type) return false;
+    if (status && q.status !== status) return false;
+    return true;
+  });
+
+  if (sort === 'newest') results.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+  else if (sort === 'budget') results.sort((a,b) => (b.budgetMax||0) - (a.budgetMax||0));
+  else if (sort === 'responses') results.sort((a,b) => b.responses - a.responses);
+
+  document.getElementById('results-count').textContent = `${results.length} projects found`;
+  document.getElementById('quotes-list').innerHTML = results.length
+    ? results.map(renderQuoteCard).join('')
+    : `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No projects found</div><div class="empty-sub">Try adjusting filters</div></div>`;
+}
+
+applyFilters();
+</script>
+</body>
+</html>

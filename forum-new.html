@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>New Thread — CraftBase Forum</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.post-page { min-height:calc(100vh - 64px); padding:48px 0; }
+.post-card { max-width:680px; margin:0 auto; }
+.cat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.cat-radio { display:none; }
+.cat-label { display:flex; align-items:center; gap:8px; padding:12px; border:2px solid var(--border); border-radius:var(--radius); cursor:pointer; font-size:0.85rem; color:var(--text2); transition:all var(--transition); }
+.cat-radio:checked + .cat-label { border-color:var(--accent); background:var(--accent-dim); color:var(--accent); }
+.preview-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; min-height:60px; font-size:0.9rem; color:var(--text2); line-height:1.7; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-actions">
+      <a href="forum.html" class="btn btn-ghost btn-sm">← Back to Forum</a>
+    </div>
+  </div>
+</nav>
+
+<div class="post-page">
+  <div class="container">
+    <div class="post-card">
+      <div style="margin-bottom:32px">
+        <div class="section-label">Community Forum</div>
+        <h2>Start a Discussion</h2>
+        <p style="color:var(--text2)">Ask a question, share an experience, or start a conversation.</p>
+      </div>
+
+      <div class="card">
+        <div class="tabs" style="margin-bottom:24px">
+          <div class="tab active" onclick="switchView(this,'write')">✏ Write</div>
+          <div class="tab" onclick="switchView(this,'preview')">👁 Preview</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Thread Title <span style="color:var(--red)">*</span></label>
+          <input type="text" id="thread-title" maxlength="120" placeholder="Write a clear, descriptive title..." oninput="updatePreview()"/>
+          <div class="form-hint" id="title-counter">0 / 120 characters</div>
+        </div>
+
+        <div id="write-section">
+          <div class="form-group">
+            <label class="form-label">Body <span style="color:var(--red)">*</span></label>
+            <textarea id="thread-body" rows="8" placeholder="Describe your question or share your experience in detail. Include relevant context, location, and specifics..." oninput="updatePreview()"></textarea>
+          </div>
+        </div>
+
+        <div id="preview-section" style="display:none">
+          <div class="form-label" style="margin-bottom:8px">Preview</div>
+          <div class="preview-box" id="preview-body">Start writing to see a preview...</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Category <span style="color:var(--red)">*</span></label>
+          <div class="cat-grid">
+            <input type="radio" name="category" value="general" id="cat-general" class="cat-radio" checked/>
+            <label for="cat-general" class="cat-label">💬 General</label>
+            <input type="radio" name="category" value="roofing" id="cat-roofing" class="cat-radio"/>
+            <label for="cat-roofing" class="cat-label">Roofing</label>
+            <input type="radio" name="category" value="budget" id="cat-budget" class="cat-radio"/>
+            <label for="cat-budget" class="cat-label">💰 Budget</label>
+            <input type="radio" name="category" value="legal" id="cat-legal" class="cat-radio"/>
+            <label for="cat-legal" class="cat-label">⚖️ Legal</label>
+            <input type="radio" name="category" value="renovation" id="cat-renovation" class="cat-radio"/>
+            <label for="cat-renovation" class="cat-label">🔨 Renovation</label>
+            <input type="radio" name="category" value="materials" id="cat-materials" class="cat-radio"/>
+            <label for="cat-materials" class="cat-label">Materials</label>
+          </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-bottom:20px;font-size:0.82rem">
+          ℹ Be respectful and specific. Threads with clear context get better answers from the community.
+        </div>
+
+        <div style="display:flex;gap:12px;justify-content:flex-end">
+          <a href="forum.html" class="btn btn-ghost">Cancel</a>
+          <button class="btn btn-primary" onclick="postThread()">Post Thread →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+function switchView(tab, view) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById('write-section').style.display = view === 'write' ? '' : 'none';
+  document.getElementById('preview-section').style.display = view === 'preview' ? '' : 'none';
+  if (view === 'preview') updatePreview();
+}
+
+function updatePreview() {
+  const title = document.getElementById('thread-title').value;
+  const body = document.getElementById('thread-body').value;
+  document.getElementById('title-counter').textContent = `${title.length} / 120 characters`;
+  document.getElementById('preview-body').textContent = body || 'Start writing to see a preview...';
+}
+
+function postThread() {
+  const title = document.getElementById('thread-title').value.trim();
+  const body = document.getElementById('thread-body').value.trim();
+  if (!title) { showToast('Please add a title','error'); return; }
+  if (body.length < 20) { showToast('Body is too short — add more detail','error'); return; }
+  showToast('Thread posted! Redirecting...', 'success');
+  setTimeout(() => window.location.href = 'forum-thread.html', 1000);
+}
+</script>
+</body>
+</html>

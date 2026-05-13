@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Company Directory — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.page-header {
+  padding: 40px 0 32px; border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.page-header h1 { font-size: 2.2rem; margin-bottom: 6px; }
+.results-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.results-count { font-size:0.85rem; color:var(--text3); }
+.sort-select { background:var(--surface); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:var(--radius); font-size:0.85rem; width:auto; }
+.companies-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px; }
+.filter-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; background:var(--accent-dim); color:var(--accent); border:1px solid rgba(245,166,35,0.2); border-radius:99px; font-size:0.8rem; cursor:pointer; }
+.filter-tag:hover { background:rgba(245,166,35,0.25); }
+.active-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="companies.html" class="nav-link active">Companies</a>
+      <a href="quotes.html" class="nav-link">Quotes</a>
+      <a href="forum.html" class="nav-link">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-secondary btn-sm" id="nav-login">Log In</a>
+      <a href="register.html" class="btn btn-primary btn-sm nav-guest">Sign Up</a>
+      <div class="nav-avatar" id="nav-avatar" style="display:none"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div class="section-label">Directory</div>
+    <h1>Construction Companies</h1>
+    <p style="color:var(--text2);margin-top:6px">Find and compare verified companies across Pakistan</p>
+  </div>
+</div>
+
+<div class="section-sm">
+  <div class="container">
+    <div class="layout-sidebar">
+      <!-- Sidebar filters -->
+      <div class="sidebar">
+        <div class="sidebar-title">Filter Results</div>
+
+        <div class="filter-group">
+          <div class="filter-label">City / Area</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="area" value="" checked onchange="applyFilters()"> All Cities</label>
+            <label class="filter-option"><input type="radio" name="area" value="Rawalpindi" onchange="applyFilters()"> Rawalpindi</label>
+            <label class="filter-option"><input type="radio" name="area" value="Islamabad" onchange="applyFilters()"> Islamabad</label>
+            <label class="filter-option"><input type="radio" name="area" value="Lahore" onchange="applyFilters()"> Lahore</label>
+            <label class="filter-option"><input type="radio" name="area" value="Karachi" onchange="applyFilters()"> Karachi</label>
+            <label class="filter-option"><input type="radio" name="area" value="Faisalabad" onchange="applyFilters()"> Faisalabad</label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="filter-group">
+          <div class="filter-label">Specialization</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" value="full_construction" onchange="applyFilters()"> Full Construction</label>
+            <label class="filter-option"><input type="checkbox" value="renovation" onchange="applyFilters()"> Renovation</label>
+            <label class="filter-option"><input type="checkbox" value="roofing" onchange="applyFilters()"> Roofing</label>
+            <label class="filter-option"><input type="checkbox" value="plumbing" onchange="applyFilters()"> Plumbing</label>
+            <label class="filter-option"><input type="checkbox" value="electrical" onchange="applyFilters()"> Electrical</label>
+            <label class="filter-option"><input type="checkbox" value="commercial" onchange="applyFilters()"> Commercial</label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="filter-group">
+          <div class="filter-label">Badges</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" value="top_rated" onchange="applyFilters()"> Top Rated</label>
+            <label class="filter-option"><input type="checkbox" value="fast_responder" onchange="applyFilters()"> Fast Responder</label>
+            <label class="filter-option"><input type="checkbox" value="most_hired" onchange="applyFilters()"> Most Hired</label>
+            <label class="filter-option"><input type="checkbox" value="verified" onchange="applyFilters()"> Verified</label>
+            <label class="filter-option"><input type="checkbox" value="rising_star" onchange="applyFilters()"> Rising Star</label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="filter-group">
+          <div class="filter-label">Min. Rating</div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="minRating" value="0" checked onchange="applyFilters()"> Any Rating</label>
+            <label class="filter-option"><input type="radio" name="minRating" value="4" onchange="applyFilters()"> 4.0+</label>
+            <label class="filter-option"><input type="radio" name="minRating" value="4.5" onchange="applyFilters()"> 4.5+</label>
+          </div>
+        </div>
+
+        <button class="btn btn-ghost btn-full btn-sm" onclick="resetFilters()" style="margin-top:8px">Reset All Filters</button>
+      </div>
+
+      <!-- Main content -->
+      <div>
+        <div class="results-bar">
+          <div class="results-count" id="results-count">Showing 6 companies</div>
+          <select class="sort-select" id="sort-select" onchange="applyFilters()">
+            <option value="rating">Sort: Top Rated</option>
+            <option value="reviews">Sort: Most Reviewed</option>
+            <option value="name">Sort: A–Z</option>
+          </select>
+        </div>
+
+        <div id="active-filters" class="active-filters"></div>
+
+        <div class="companies-grid" id="companies-grid"></div>
+
+        <div class="pagination" id="pagination">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 CraftBase</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+const badgeLabels = { top_rated:'⭐ Top Rated', fast_responder:'⚡ Fast Responder', most_hired:'🏆 Most Hired', rising_star:'🌟 Rising Star', verified:'✅ Verified' };
+
+function renderCompanyCard(c) {
+  return `
+    <a href="company-profile.html?id=${c.id}" style="text-decoration:none">
+      <div class="company-card">
+        <div class="company-header">
+          <div class="logo">${c.logo}</div>
+          <div style="flex:1">
+            <div class="company-name">${c.name}</div>
+            <div class="company-area">📍 ${c.area}</div>
+          </div>
+          ${c.verified ? '<span class="badge badge-green">✅ Verified</span>' : ''}
+        </div>
+        <div class="company-rating">
+          <div class="rating-score">${c.avgRating.toFixed(1)}</div>
+          <div class="stars">${'★'.repeat(Math.round(c.avgRating))}<span style="color:var(--text3)">${'★'.repeat(5-Math.round(c.avgRating))}</span></div>
+          <div class="rating-count">(${c.totalReviews} reviews)</div>
+        </div>
+        <div class="company-specs">
+          ${c.specialization.map(s => `<span class="tag">${s.replace(/_/g,' ')}</span>`).join('')}
+        </div>
+        <div class="company-badges">
+          ${c.badges.filter(b => b!=='verified').map(b => `<span class="badge-chip">${badgeLabels[b].replace(/⭐|⚡|🏆|🌟|✅/g, '') || b}</span>`).join('')}
+        </div>
+        <div style="margin-top:8px">
+          <span class="btn btn-secondary btn-sm btn-full">View Profile</span>
+        </div>
+      </div>
+    </a>`;
+}
+
+function resetFilters() {
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('input[name="area"]')[0].checked = true;
+  document.querySelectorAll('input[name="minRating"]')[0].checked = true;
+  applyFilters();
+}
+
+// Pagination
+let currentPage = 1;
+const companiesPerPage = 4;
+let filteredCompanies = [];
+
+function renderPage(page) {
+  currentPage = page;
+  const start = (page - 1) * companiesPerPage;
+  const end = start + companiesPerPage;
+  const pageCompanies = filteredCompanies.slice(start, end);
+  
+  document.getElementById('companies-grid').innerHTML = pageCompanies.length
+    ? pageCompanies.map(renderCompanyCard).join('')
+    : `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><div class="empty-title">No companies found</div><div class="empty-sub">Try adjusting your filters</div></div>`;
+  
+  updatePaginationButtons();
+}
+
+function updatePaginationButtons() {
+  const totalPages = Math.ceil(filteredCompanies.length / companiesPerPage);
+  const btns = document.querySelectorAll('.page-btn');
+  
+  btns.forEach((btn, i) => {
+    if (i === 0) {
+      btn.textContent = '‹';
+      btn.disabled = currentPage === 1;
+      btn.onclick = () => currentPage > 1 && renderPage(currentPage - 1);
+    } else if (i === btns.length - 1) {
+      btn.textContent = '›';
+      btn.disabled = currentPage === totalPages;
+      btn.onclick = () => currentPage < totalPages && renderPage(currentPage + 1);
+    } else {
+      const pageNum = i;
+      btn.textContent = pageNum;
+      btn.classList.toggle('active', currentPage === pageNum);
+      btn.onclick = () => renderPage(pageNum);
+      btn.style.display = pageNum <= totalPages ? '' : 'none';
+    }
+  });
+}
+
+function applyFilters() {
+  const area = document.querySelector('input[name="area"]:checked')?.value || '';
+  const specs = [...document.querySelectorAll('input[type="checkbox"][value$="construction"], input[type="checkbox"][value="renovation"], input[type="checkbox"][value="roofing"], input[type="checkbox"][value="plumbing"], input[type="checkbox"][value="electrical"], input[type="checkbox"][value="commercial"]')]
+    .filter(cb => cb.checked).map(cb => cb.value);
+  const badges = [...document.querySelectorAll('input[type="checkbox"][value="top_rated"], input[type="checkbox"][value="fast_responder"], input[type="checkbox"][value="most_hired"], input[type="checkbox"][value="verified"], input[type="checkbox"][value="rising_star"]')]
+    .filter(cb => cb.checked).map(cb => cb.value);
+  const minRating = parseFloat(document.querySelector('input[name="minRating"]:checked')?.value || 0);
+  const sort = document.getElementById('sort-select').value;
+
+  filteredCompanies = SAMPLE.companies.filter(c => {
+    if (area && c.area !== area) return false;
+    if (specs.length && !specs.some(s => c.specialization.includes(s))) return false;
+    if (badges.length && !badges.some(b => c.badges.includes(b))) return false;
+    if (c.avgRating < minRating) return false;
+    return true;
+  });
+
+  if (sort === 'rating') filteredCompanies.sort((a,b) => b.avgRating - a.avgRating);
+  else if (sort === 'reviews') filteredCompanies.sort((a,b) => b.totalReviews - a.totalReviews);
+  else filteredCompanies.sort((a,b) => a.name.localeCompare(b.name));
+
+  document.getElementById('results-count').textContent = `Showing ${filteredCompanies.length} companies`;
+  currentPage = 1;
+  renderPage(1);
+}
+
+// Initial render
+applyFilters();
+
+// Read URL params
+const params = new URLSearchParams(window.location.search);
+if (params.get('area')) {
+  const r = document.querySelector(`input[name="area"][value="${params.get('area')}"]`);
+  if (r) { r.checked = true; applyFilters(); }
+}
+</script>
+</body>
+</html>

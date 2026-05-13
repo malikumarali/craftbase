@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Company Dashboard — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="quotes.html" class="nav-link">Browse Quotes</a>
+      <a href="forum.html" class="nav-link">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="company-profile.html" class="btn btn-ghost btn-sm">View My Profile</a>
+      <div class="nav-avatar" id="nav-avatar">C</div>
+      <button class="btn btn-ghost btn-sm" onclick="Auth.logout();window.location.href='index.html'">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-grid">
+  <!-- Sidebar -->
+  <div class="dash-sidebar">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;padding:0 4px">
+      <div style="font-size:2rem;width:48px;height:48px" id="dashboard-company-logo"></div>
+      <div>
+        <div style="font-weight:700;font-size:0.95rem">Apex Construction Group</div>
+        <div style="font-size:0.78rem;color:var(--text3)">Company Account</div>
+      </div>
+    </div>
+    <div class="dash-nav-item active" onclick="showSection('overview')">Overview</div>
+    <div class="dash-nav-item" onclick="showSection('open-quotes')">Open Quotes</div>
+    <div class="dash-nav-item" onclick="showSection('my-responses')">My Responses</div>
+    <div class="dash-nav-item" onclick="showSection('badges')">My Badges</div>
+    <div class="dash-nav-item" onclick="showSection('reviews-in')">Reviews Received</div>
+    <div class="dash-nav-item" onclick="showSection('profile-settings')">Profile Settings</div>
+  </div>
+
+  <!-- Main -->
+  <div class="dash-content">
+
+    <!-- OVERVIEW -->
+    <div id="section-overview">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px">
+        <div>
+          <h2 style="font-size:1.6rem;margin-bottom:6px">Company Dashboard</h2>
+          <p style="color:var(--text2)">Manage your profile, respond to quotes, and track your performance.</p>
+        </div>
+        <a href="company-profile.html" class="btn btn-secondary btn-sm">View Public Profile →</a>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div style="font-size:1.2rem;margin-bottom:4px"></div>
+          <div class="stat-number" style="color:var(--green)">12</div>
+          <div class="stat-label">Open Quotes</div>
+        </div>
+        <div class="stat-card">
+          <div style="font-size:1.2rem;margin-bottom:4px"></div>
+          <div class="stat-number" style="color:var(--accent)">24</div>
+          <div class="stat-label">Times Hired</div>
+        </div>
+        <div class="stat-card">
+          <div style="font-size:1.2rem;margin-bottom:4px"></div>
+          <div class="stat-number">4.8</div>
+          <div class="stat-label">Avg Rating</div>
+        </div>
+        <div class="stat-card">
+          <div style="font-size:1.2rem;margin-bottom:4px"></div>
+          <div class="stat-number">142</div>
+          <div class="stat-label">Total Reviews</div>
+        </div>
+      </div>
+
+      <!-- Badges earned -->
+      <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:16px">Your Badges</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px">
+        <div class="card" style="display:flex;align-items:center;gap:10px;padding:14px 18px;flex:none">
+          <span style="font-size:1.4rem">⭐</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem">Top Rated</div>
+            <div style="font-size:0.76rem;color:var(--text3)">Avg ≥ 4.5 · 10+ reviews</div>
+          </div>
+          <span class="badge badge-green" style="font-size:0.7rem">Earned</span>
+        </div>
+        <div class="card" style="display:flex;align-items:center;gap:10px;padding:14px 18px;flex:none">
+          <span style="font-size:1.4rem">🏆</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem">Most Hired</div>
+            <div style="font-size:0.76rem;color:var(--text3)">Hired 20+ times</div>
+          </div>
+          <span class="badge badge-green" style="font-size:0.7rem">Earned</span>
+        </div>
+        <div class="card" style="display:flex;align-items:center;gap:10px;padding:14px 18px;flex:none">
+          <span style="font-size:1.4rem">✅</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem">Verified License</div>
+            <div style="font-size:0.76rem;color:var(--text3)">Admin verified</div>
+          </div>
+          <span class="badge badge-green" style="font-size:0.7rem">Earned</span>
+        </div>
+        <div class="card" style="display:flex;align-items:center;gap:10px;padding:14px 18px;flex:none;opacity:0.4">
+          <span style="font-size:1.4rem">⚡</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem">Fast Responder</div>
+            <div style="font-size:0.76rem;color:var(--text3)">80%+ within 24hrs</div>
+          </div>
+          <span class="badge badge-gray" style="font-size:0.7rem">73% — Almost!</span>
+        </div>
+      </div>
+
+      <!-- Recent quotes to respond to -->
+      <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:16px">New Quote Requests Near You</h4>
+      <div style="display:flex;flex-direction:column;gap:12px" id="incoming-quotes"></div>
+    </div>
+
+    <!-- OPEN QUOTES -->
+    <div id="section-open-quotes" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <h3 style="font-family:var(--font-body);font-weight:700">Open Quote Requests in Your Area</h3>
+        <select class="sort-select">
+          <option>Newest First</option>
+          <option>Highest Budget</option>
+        </select>
+      </div>
+      <div id="open-quotes-list" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <!-- MY RESPONSES -->
+    <div id="section-my-responses" style="display:none">
+      <h3 style="font-family:var(--font-body);font-weight:700;margin-bottom:24px">My Submitted Responses</h3>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <div>
+              <div style="font-weight:700;font-size:0.95rem">Residential 3-Bedroom House Build</div>
+              <div style="font-size:0.8rem;color:var(--text3)">Rawalpindi · Responded Feb 3, 2026</div>
+            </div>
+            <span class="badge badge-gold">PENDING</span>
+          </div>
+            <div style="display:flex;gap:16px;font-size:0.82rem;color:var(--text2)">
+            <span>PKR 6.5M</span>
+            <span>⏱ 165 days</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <div>
+              <div style="font-weight:700;font-size:0.95rem">Office Renovation – 2nd Floor</div>
+              <div style="font-size:0.8rem;color:var(--text3)">Islamabad · Responded Jan 18, 2026</div>
+            </div>
+            <span class="badge badge-green">✅ ACCEPTED</span>
+          </div>
+            <div style="display:flex;gap:16px;font-size:0.82rem;color:var(--text2)">
+            <span>PKR 2.2M</span>
+            <span>⏱ 90 days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div id="section-badges" style="display:none">
+      <h3 style="font-family:var(--font-body);font-weight:700;margin-bottom:8px">Badge Progress</h3>
+      <p style="color:var(--text2);margin-bottom:24px">Badges are awarded automatically based on real performance data.</p>
+      <div id="badges-container" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <!-- REVIEWS IN -->
+    <div id="section-reviews-in" style="display:none">
+      <h3 style="font-family:var(--font-body);font-weight:700;margin-bottom:24px">Reviews You've Received</h3>
+      <div id="reviews-container" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <!-- PROFILE SETTINGS -->
+    <div id="section-profile-settings" style="display:none">
+      <h3 style="font-family:var(--font-body);font-weight:700;margin-bottom:24px">Profile Settings</h3>
+      <div class="card">
+        <div class="form-group">
+          <label class="form-label">Company Name</label>
+          <input type="text" value="Apex Construction Group"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea rows="4">Rawalpindi's premier full-service construction company with over 12 years of experience.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" value="+92 51 234 5678"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Website</label>
+          <input type="url" value="https://apexconstruct.pk"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Area Served</label>
+          <input type="text" value="Rawalpindi, Islamabad"/>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('Profile updated!','success')">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+// Initialize auth from localStorage first
+Auth.init();
+// Authentication check - must run after main.js loads
+if (!Auth.isLoggedIn() || Auth.getRole() !== 'COMPANY') {
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;background:linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);">
+      <div style="text-align:center;max-width:420px;">
+        <div style="font-size:3rem;margin-bottom:16px">🔐</div>
+        <h2 style="font-size:1.6rem;margin-bottom:8px;color:var(--text)">Access Denied</h2>
+        <p style="color:var(--text2);margin-bottom:24px;font-size:0.95rem">
+          Please log in as a company to access this dashboard.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <a href="login.html" class="btn btn-primary" style="display:inline-block;padding:10px 16px">Go to Login →</a>
+          <a href="index.html" class="btn btn-ghost" style="display:inline-block;padding:10px 16px">Back Home</a>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.style.margin = '0';
+  document.body.style.padding = '0';
+  throw new Error('Unauthorized access');
+}
+</script>
+<script>
+function showSection(name) {
+  const sections = ['overview','open-quotes','my-responses','badges','reviews-in','profile-settings'];
+  sections.forEach(s => {
+    const el = document.getElementById('section-'+s);
+    if (el) el.style.display = (s === name) ? '' : 'none';
+  });
+  document.querySelectorAll('.dash-nav-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  if (name === 'open-quotes') renderOpenQuotes();
+}
+
+// Incoming quotes on overview
+document.getElementById('incoming-quotes').innerHTML = SAMPLE.quotes.filter(q => q.status === 'OPEN').map(q => `
+  <div class="card" style="display:flex;align-items:center;gap:16px">
+    <div style="flex:1">
+      <div style="font-weight:700;font-size:0.9rem;margin-bottom:4px">${q.title}</div>
+      <div style="font-size:0.8rem;color:var(--text3)">📍 ${q.location} · 💰 PKR ${(q.budgetMin/1000).toFixed(0)}K–${(q.budgetMax/1000).toFixed(0)}K · ${q.responses} responses so far</div>
+    </div>
+    <a href="quote-detail.html" class="btn btn-primary btn-sm">Respond →</a>
+  </div>
+`).join('');
+
+function renderOpenQuotes() {
+  document.getElementById('open-quotes-list').innerHTML = SAMPLE.quotes.map(q => {
+    const statusColors = { OPEN:'badge-green', HIRED:'badge-gold', CLOSED:'badge-gray' };
+    return `
+    <a href="quote-detail.html" style="text-decoration:none">
+      <div class="quote-card">
+        <div class="quote-status">
+          <span class="badge ${statusColors[q.status]}">${q.status}</span>
+          <span class="mono" style="font-size:0.72rem">${new Date(q.createdAt).toLocaleDateString()}</span>
+        </div>
+        <div class="quote-title">${q.title}</div>
+        <p style="font-size:0.82rem;color:var(--text3)">${q.description.substring(0,100)}...</p>
+        <div class="quote-meta">
+          <div class="quote-meta-item">📍 ${q.location}</div>
+          <div class="quote-meta-item">💰 PKR ${(q.budgetMin/1000).toFixed(0)}K–${(q.budgetMax/1000).toFixed(0)}K</div>
+          <div class="quote-meta-item">⏱ ${q.timeline}</div>
+          <div class="quote-meta-item" style="color:var(--accent)">💬 ${q.responses} responses</div>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+// Render badges
+function renderBadges() {
+  const badgesList = [
+    {icon:'⭐',name:'Top Rated',desc:'Avg rating ≥ 4.5 with 10+ reviews',earned:true,progress:'4.8 avg · 142 reviews'},
+    {icon:'🏆',name:'Most Hired',desc:'Hired on 20+ projects',earned:true,progress:'24 hires completed'},
+    {icon:'✅',name:'Verified License',desc:'Admin-verified PEC license',earned:true,progress:'Verified Jan 2024'},
+    {icon:'⚡',name:'Fast Responder',desc:'Respond to 80%+ within 24hrs',earned:false,progress:'73% response rate — need 80%'},
+    {icon:'🌟',name:'Rising Star',desc:'5+ reviews in 30 days with avg ≥ 4.0',earned:false,progress:'2 reviews this month'},
+  ];
+  document.getElementById('badges-container').innerHTML = badgesList.map(b => `
+    <div class="card" style="display:flex;align-items:center;gap:16px;${!b.earned?'opacity:0.55':''}">
+      <div style="font-size:2rem">${b.icon}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;margin-bottom:2px">${b.name}</div>
+        <div style="font-size:0.82rem;color:var(--text2)">${b.desc}</div>
+        <div style="font-size:0.78rem;color:var(--text3);margin-top:4px">Progress: ${b.progress}</div>
+      </div>
+      <span class="${b.earned ? 'badge badge-green' : 'badge badge-gray'}">${b.earned ? 'Earned ✓' : 'Not Yet'}</span>
+    </div>`).join('');
+}
+
+// Render reviews
+function renderReviews() {
+  document.getElementById('reviews-container').innerHTML = SAMPLE.reviews.map(r => {
+    const avg = ((r.ratingQuality+r.ratingTimeliness+r.ratingComm+r.ratingValue)/4).toFixed(1);
+    return `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">${r.avatar}</div>
+            <div>
+              <div class="reviewer-name">${r.user}</div>
+              <div class="reviewer-date">${new Date(r.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
+              <div class="verified-hire">✅ Verified Hire</div>
+            </div>
+          </div>
+          <div style="font-family:var(--font-display);font-size:1.6rem;color:var(--accent)">${avg}</div>
+        </div>
+        <p class="review-comment">"${r.comment}"</p>
+      </div>`;
+  }).join('');
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  renderBadges();
+  renderReviews();
+  
+  // Inject company logo into dashboard sidebar
+  const apexCompany = SAMPLE.companies[0];
+  const dashLogoEl = document.getElementById('dashboard-company-logo');
+  if (dashLogoEl && apexCompany.logo) {
+    dashLogoEl.innerHTML = apexCompany.logo;
+  }
+});
+</script>
+</body>
+</html>

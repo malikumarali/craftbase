@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apex Construction Group — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.profile-hero {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 40px 0;
+}
+.profile-top { display:flex; gap:24px; align-items:flex-start; }
+.profile-logo {
+  width: 96px; height: 96px; border-radius: var(--radius-lg);
+  background: var(--surface); border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.8rem; flex-shrink: 0;
+}
+.profile-name { font-size: 1.8rem; font-family: var(--font-display); letter-spacing: 0.03em; }
+.profile-meta { display:flex; flex-wrap:wrap; gap:14px; margin-top:10px; }
+.profile-meta-item { display:flex; align-items:center; gap:6px; font-size:0.85rem; color:var(--text2); }
+.rating-breakdown { display:grid; gap:10px; }
+.rating-row { display:grid; grid-template-columns:120px 1fr 40px; align-items:center; gap:12px; }
+.rating-row-label { font-size:0.82rem; color:var(--text2); }
+.rating-row-bar { height:6px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.rating-row-bar-fill { height:100%; background:var(--accent); border-radius:3px; }
+.rating-row-val { font-family:var(--font-mono); font-size:0.82rem; color:var(--text); text-align:right; }
+.portfolio-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.portfolio-item {
+  aspect-ratio:1; border-radius:var(--radius);
+  background:var(--surface2); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:2rem; overflow:hidden; cursor:pointer;
+  transition:all var(--transition);
+}
+.portfolio-item:hover { border-color:var(--accent); transform:scale(1.02); }
+.overall-score {
+  font-family:var(--font-display); font-size:4rem; color:var(--accent);
+  line-height:1; text-align:center;
+}
+.quote-cta {
+  background: linear-gradient(135deg, var(--surface2), var(--surface));
+  border: 1px solid var(--border2); border-radius: var(--radius-lg);
+  padding: 28px; text-align: center;
+  position: sticky; top: 84px;
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="companies.html" class="nav-link active">Companies</a>
+      <a href="quotes.html" class="nav-link">Quotes</a>
+      <a href="forum.html" class="nav-link">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-secondary btn-sm" id="nav-login">Log In</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+      <div class="nav-avatar" id="nav-avatar" style="display:none"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Profile Hero -->
+<div class="profile-hero">
+  <div class="container">
+    <div style="font-size:0.82rem;color:var(--text3);margin-bottom:16px">
+      <a href="companies.html" style="color:var(--text3)">Companies</a> › Apex Construction Group
+    </div>
+    <div class="profile-top">
+      <div class="profile-logo" id="company-profile-logo"></div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="profile-name">Apex Construction Group</div>
+            <div class="profile-meta">
+              <span class="profile-meta-item">📍 Rawalpindi, Punjab</span>
+              <span class="profile-meta-item">📞 +92 51 234 5678</span>
+              <span class="profile-meta-item">🌐 <a href="#" style="color:var(--accent)">apexconstruct.pk</a></span>
+              <span class="profile-meta-item mono" style="color:var(--text3)">Member since Jan 2024</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+              <span class="badge badge-gold">⭐ Top Rated</span>
+              <span class="badge badge-blue">🏆 Most Hired</span>
+              <span class="badge badge-green">✅ Verified License</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+              <div style="font-family:var(--font-display);font-size:2.4rem;color:var(--accent)">4.8</div>
+              <div>
+                <div style="color:var(--accent);font-size:1.2rem">★★★★★</div>
+                <div style="font-size:0.8rem;color:var(--text3)">142 reviews</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+          <span class="tag">Full Construction</span>
+          <span class="tag">Renovation</span>
+          <span class="tag">Commercial</span>
+          <span class="tag">Residential</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<section class="section-sm">
+  <div class="container">
+    <div class="layout-sidebar" style="grid-template-columns:1fr 300px">
+      <!-- Left: main info -->
+      <div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this,'overview')">Overview</div>
+          <div class="tab" onclick="switchTab(this,'reviews')">Reviews (142)</div>
+          <div class="tab" onclick="switchTab(this,'portfolio')">Portfolio</div>
+        </div>
+
+        <!-- Overview tab -->
+        <div id="tab-overview">
+          <div class="card" style="margin-bottom:20px">
+            <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:12px">About This Company</h4>
+            <p>Apex Construction Group is Rawalpindi's premier full-service construction company with over 12 years of experience. We specialize in residential and commercial projects, from ground-up builds to complete renovations. Our in-house team of 45 professionals handles everything from design to handover.</p>
+            <p style="margin-top:10px">We are fully licensed by the Pakistan Engineering Council (PEC) and all projects are insured. Our track record includes 400+ completed projects with a 97% client satisfaction rate.</p>
+          </div>
+
+          <div class="card" style="margin-bottom:20px">
+            <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:16px">Rating Breakdown</h4>
+            <div style="display:flex;gap:32px;align-items:center">
+              <div>
+                <div class="overall-score">4.8</div>
+                <div style="color:var(--accent);font-size:1rem;text-align:center;margin-top:4px">★★★★★</div>
+                <div style="font-size:0.78rem;color:var(--text3);text-align:center;margin-top:4px">142 reviews</div>
+              </div>
+              <div style="flex:1" class="rating-breakdown">
+                <div class="rating-row">
+                  <div class="rating-row-label">Quality</div>
+                  <div class="rating-row-bar"><div class="rating-row-bar-fill" style="width:95%"></div></div>
+                  <div class="rating-row-val">4.8</div>
+                </div>
+                <div class="rating-row">
+                  <div class="rating-row-label">Timeliness</div>
+                  <div class="rating-row-bar"><div class="rating-row-bar-fill" style="width:88%"></div></div>
+                  <div class="rating-row-val">4.4</div>
+                </div>
+                <div class="rating-row">
+                  <div class="rating-row-label">Communication</div>
+                  <div class="rating-row-bar"><div class="rating-row-bar-fill" style="width:98%"></div></div>
+                  <div class="rating-row-val">4.9</div>
+                </div>
+                <div class="rating-row">
+                  <div class="rating-row-label">Value</div>
+                  <div class="rating-row-bar"><div class="rating-row-bar-fill" style="width:90%"></div></div>
+                  <div class="rating-row-val">4.5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:12px">Quick Stats</h4>
+            <div class="grid-4" style="gap:16px">
+              <div style="text-align:center"><div class="stat-number">400+</div><div class="stat-label">Projects Done</div></div>
+              <div style="text-align:center"><div class="stat-number">12</div><div class="stat-label">Years Active</div></div>
+              <div style="text-align:center"><div class="stat-number">45</div><div class="stat-label">Team Members</div></div>
+              <div style="text-align:center"><div class="stat-number">97%</div><div class="stat-label">Satisfaction</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews tab (hidden initially) -->
+        <div id="tab-reviews" style="display:none">
+          <div style="display:flex;flex-direction:column;gap:16px" id="reviews-list"></div>
+        </div>
+
+        <!-- Portfolio tab -->
+        <div id="tab-portfolio" style="display:none">
+          <div class="portfolio-grid">
+            ${['House','Office','Construction','Tools','House','Office','Construction','Tools'].map(e => `<div class="portfolio-item">${e}</div>`).join('')}
+          </div>
+          <p style="color:var(--text3);font-size:0.82rem;margin-top:12px;text-align:center">8 portfolio photos · Click to view</p>
+        </div>
+      </div>
+
+      <!-- Right: CTA sidebar -->
+      <div>
+        <div class="quote-cta">
+          <div style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:8px">Get a Quote</div>
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Post your project and let Apex Construction respond with a detailed estimate.</p>
+          <a href="quote-new.html" class="btn btn-primary btn-full">Post a Project</a>
+          <div style="margin:16px 0;font-size:0.78rem;color:var(--text3)">or contact directly</div>
+          <a href="tel:+925123456789" class="btn btn-secondary btn-full">📞 Call Company</a>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="sidebar-title">Response Stats</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:0.82rem;color:var(--text2)">Response Rate</span>
+              <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--green)">92%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:0.82rem;color:var(--text2)">Avg Response Time</span>
+              <span style="font-family:var(--font-mono);font-size:0.85rem">6 hrs</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:0.82rem;color:var(--text2)">Hire Rate</span>
+              <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--accent)">68%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="sidebar-title">Areas Served</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">Rawalpindi</span>
+            <span class="tag">Islamabad</span>
+            <span class="tag">Attock</span>
+            <span class="tag">Chakwal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 CraftBase</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+function switchTab(el, tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['overview','reviews','portfolio'].forEach(t => {
+    const panel = document.getElementById('tab-'+t);
+    if(panel) panel.style.display = (t === tab) ? '' : 'none';
+  });
+}
+
+// Get company ID from URL and load company data
+const urlParams = new URLSearchParams(window.location.search);
+const companyId = parseInt(urlParams.get('id')) || 1;
+const company = SAMPLE.companies.find(c => c.id === companyId) || SAMPLE.companies[0];
+
+// Update breadcrumb and title
+document.querySelector('.profile-name').textContent = company.name;
+document.querySelector('title').textContent = company.name + ' — CraftBase';
+document.querySelector('.profile-hero > .container > div:first-child').textContent = `Companies › ${company.name}`;
+
+// Update company logo
+const profileLogoEl = document.getElementById('company-profile-logo');
+if (profileLogoEl && company.logo) {
+  profileLogoEl.innerHTML = company.logo;
+}
+
+// Update location and meta (using area and generating common data)
+const metaItems = document.querySelectorAll('.profile-meta-item');
+if (metaItems[0]) metaItems[0].textContent = '📍 ' + company.area + ', Pakistan';
+
+// Render reviews for this company
+const companyReviews = SAMPLE.reviews.filter(r => r.companyId === company.id);
+document.getElementById('reviews-list').innerHTML = companyReviews.map(r => {
+  const avg = ((r.ratingQuality+r.ratingTimeliness+r.ratingComm+r.ratingValue)/4).toFixed(1);
+  return `
+  <div class="review-card">
+    <div class="review-header">
+      <div class="reviewer-info">
+        <div class="reviewer-avatar">${r.avatar}</div>
+        <div>
+          <div class="reviewer-name">${r.user}</div>
+          <div class="reviewer-date">${new Date(r.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
+          ${r.verifiedHire ? '<div class="verified-hire">✅ Verified Hire</div>' : ''}
+        </div>
+      </div>
+      <div style="font-family:var(--font-display);font-size:1.6rem;color:var(--accent)">${avg}</div>
+    </div>
+    <div class="review-ratings">
+      ${[['Quality',r.ratingQuality],['Timeliness',r.ratingTimeliness],['Communication',r.ratingComm],['Value',r.ratingValue]].map(([label,val]) => `
+        <div class="rating-bar">
+          <div class="rating-bar-label"><span>${label}</span><span style="color:var(--text)">${val}/5</span></div>
+          <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${val*20}%"></div></div>
+        </div>`).join('')}
+    </div>
+    ${r.comment ? `<p class="review-comment">"${r.comment}"</p>` : ''}
+  </div>`;
+}).join('') || '<div class="empty-state"><div class="empty-sub">No reviews yet</div></div>';
+
+// Update rating display
+const ratingScore = company.avgRating;
+const ratingStars = '★'.repeat(Math.round(ratingScore)) + '<span style="color:var(--text3)">' + '★'.repeat(5-Math.round(ratingScore)) + '</span>';
+const ratingElements = document.querySelectorAll('[style*="2.4rem"][style*="accent"]');
+if (ratingElements.length > 0) {
+  ratingElements[0].textContent = ratingScore.toFixed(1);
+}
+const starElements = document.querySelectorAll('div[style*="1.2rem"] div[style*="accent"]');
+if (starElements.length > 0) {
+  starElements[0].innerHTML = ratingStars;
+}
+const countElements = document.querySelectorAll('[style*="0.8rem"][style*="text3"]');
+if (countElements.length > 0) {
+  countElements[0].textContent = company.totalReviews + ' reviews';
+}
+
+// Update tabs with review count
+const reviewTab = document.querySelectorAll('.tab')[1];
+if (reviewTab) reviewTab.textContent = `Reviews (${companyReviews.length})`;
+
+// Update specializations tags
+const tagsContainer = document.querySelector('.profile-top [style*="flex:1"] > div:last-child');
+if (tagsContainer) {
+  tagsContainer.innerHTML = company.specialization.map(s => `<span class="tag">${s.replace(/_/g,' ')}</span>`).join('');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Register — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+body { display:flex; flex-direction:column; min-height:100vh; }
+.auth-page { flex:1; display:flex; align-items:center; justify-content:center; padding: 40px 20px; }
+.auth-wrap { max-width:520px; width:100%; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow-lg); }
+.role-selector { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px; }
+.role-option { display:none; }
+.role-label {
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  padding:14px 10px; border:2px solid var(--border); border-radius:var(--radius);
+  cursor:pointer; text-align:center; transition:all var(--transition);
+  font-size:0.82rem; color:var(--text2); font-weight:500;
+}
+.role-label .role-icon { font-size:1.8rem; }
+.role-option:checked + .role-label { border-color:var(--accent); background:var(--accent-dim); color:var(--accent); }
+.company-fields { display:none; }
+.company-fields.show { display:block; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-actions">
+      <span style="font-size:0.85rem;color:var(--text2)">Already have an account?</span>
+      <a href="login.html" class="btn btn-secondary btn-sm">Log In</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-wrap">
+    <div style="text-align:center;margin-bottom:28px">
+      <a href="index.html" class="nav-logo" style="display:inline-flex;font-size:1.6rem;justify-content:center">Craft<span>Base</span></a>
+      <h2 style="margin-top:16px;font-size:1.5rem">Create Your Account</h2>
+      <p style="color:var(--text2);font-size:0.85rem">Join Pakistan's trusted construction platform</p>
+    </div>
+
+    <!-- Role selector -->
+    <div style="margin-bottom:24px">
+      <div class="form-label" style="margin-bottom:10px">I am a...</div>
+      <div class="role-selector">
+        <input type="radio" id="role-user" name="role" value="USER" class="role-option" checked onchange="toggleCompanyFields()"/>
+        <label for="role-user" class="role-label">
+          <span class="role-icon">👤</span>
+          <strong>Client / User</strong>
+          <span style="font-size:0.75rem">Looking to hire</span>
+        </label>
+        <input type="radio" id="role-company" name="role" value="COMPANY" class="role-option" onchange="toggleCompanyFields()"/>
+        <label for="role-company" class="role-label">
+          <span class="role-icon"></span>
+          <strong>Company</strong>
+          <span style="font-size:0.75rem">Looking for projects</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Base fields -->
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input type="text" id="name" placeholder="Ahmed Khan"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="password" placeholder="Min 8 characters"/>
+      <div class="form-hint">Must be at least 8 characters with a number</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">City / Location</label>
+      <select id="location">
+        <option value="">Select your city</option>
+        <option>Rawalpindi</option>
+        <option>Islamabad</option>
+        <option>Lahore</option>
+        <option>Karachi</option>
+        <option>Faisalabad</option>
+        <option>Multan</option>
+        <option>Peshawar</option>
+        <option>Quetta</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <!-- Company extra fields -->
+    <div class="company-fields" id="company-fields">
+      <div class="divider"></div>
+      <div class="alert alert-info" style="margin-bottom:20px;font-size:0.82rem">
+        ℹ You will complete your company profile after registration.
+      </div>
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input type="text" id="company-name" placeholder="Apex Construction Group"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+92 300 1234567"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Primary Specialization</label>
+        <select id="specialization">
+          <option value="">Select...</option>
+          <option value="full_construction">Full Construction</option>
+          <option value="renovation">Renovation</option>
+          <option value="roofing">Roofing</option>
+          <option value="plumbing">Plumbing</option>
+          <option value="electrical">Electrical</option>
+          <option value="commercial">Commercial</option>
+        </select>
+      </div>
+    </div>
+
+    <label class="checkbox-label" style="margin-bottom:20px">
+      <input type="checkbox" id="agree"/>
+      I agree to the <a href="#" style="color:var(--accent)">Terms of Use</a> and <a href="#" style="color:var(--accent)">Privacy Policy</a>
+    </label>
+
+    <button class="btn btn-primary btn-full" onclick="doRegister()">Create Account</button>
+    <p style="text-align:center;margin-top:20px;font-size:0.85rem">
+      Already have an account? <a href="login.html" style="color:var(--accent);font-weight:600">Log in →</a>
+    </p>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+// Detect API URL based on where frontend is served from
+const getAPIUrl = () => {
+  const host = window.location.hostname;
+  const port = '5000';
+  return `http://${host}:${port}/api/auth`;
+};
+const API_URL = getAPIUrl();
+
+function toggleCompanyFields() {
+  const isCompany = document.getElementById('role-company').checked;
+  document.getElementById('company-fields').classList.toggle('show', isCompany);
+}
+
+async function doRegister() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('password').value;
+  const agreed = document.getElementById('agree').checked;
+  const role = document.querySelector('input[name="role"]:checked').value;
+  
+  if (!name || !email || !pass) { 
+    showToast('Please fill all required fields','error'); 
+    return; 
+  }
+  if (pass.length < 8) { 
+    showToast('Password must be at least 8 characters','error'); 
+    return; 
+  }
+  if (!agreed) { 
+    showToast('Please agree to the Terms of Use','error'); 
+    return; 
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password: pass, role })
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      showToast(`${data.message || 'Registration failed'}`, 'error');
+      console.error('Registration failed:', data);
+      return;
+    }
+    
+    // Store token and user data
+    localStorage.setItem('craftbase_token', data.token);
+    Auth.login(data.user);
+    showToast('Account created successfully! Welcome to CraftBase.', 'success');
+    
+    setTimeout(() => {
+      window.location.href = role === 'COMPANY' ? 'dashboard-company.html' : 'dashboard-user.html';
+    }, 1000);
+  } catch (err) {
+    showToast('Connection error. Make sure the server is running on port 5000.', 'error');
+    console.error('Registration error:', err);
+  }
+}
+</script>
+</body>
+</html>

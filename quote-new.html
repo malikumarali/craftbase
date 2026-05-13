@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Post a Project — CraftBase</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.post-page { min-height:calc(100vh - 64px); display:flex; align-items:flex-start; padding:48px 0; background:var(--bg); }
+.post-card { max-width:620px; width:100%; margin:0 auto; }
+.step-content { display:none; animation: fadeIn 0.3s ease; }
+.step-content.active { display:block; }
+.upload-zone {
+  border:2px dashed var(--border2); border-radius:var(--radius);
+  padding:32px; text-align:center; cursor:pointer;
+  transition:all var(--transition); color:var(--text3);
+}
+.upload-zone:hover { border-color:var(--accent); color:var(--accent); }
+.upload-zone input { display:none; }
+.step-nav { display:flex; gap:12px; justify-content:space-between; margin-top:28px; }
+.success-state { text-align:center; padding:60px 20px; }
+.success-icon { font-size:4rem; margin-bottom:20px; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">Craft<span>Base</span></a>
+    <div class="nav-actions">
+      <a href="quotes.html" class="btn btn-ghost btn-sm">← Back to Quotes</a>
+    </div>
+  </div>
+</nav>
+
+<div class="post-page">
+  <div class="container">
+    <div class="post-card">
+      <div style="margin-bottom:32px;text-align:center">
+        <div class="section-label">New Project</div>
+        <h2>Post a Quote Request</h2>
+        <p style="color:var(--text2)">Get competitive quotes from verified contractors in your area.</p>
+      </div>
+
+      <!-- Progress steps -->
+      <div class="steps" id="step-indicator">
+        <div class="step active" id="step-dot-1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Project Details</div>
+        </div>
+        <div class="step-line" id="line-1"></div>
+        <div class="step" id="step-dot-2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Budget & Timeline</div>
+        </div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step" id="step-dot-3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Location & Photos</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <!-- STEP 1 -->
+        <div class="step-content active" id="step-1">
+          <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:20px">Tell us about your project</h4>
+          <div class="form-group">
+            <label class="form-label">Project Title <span style="color:var(--red)">*</span></label>
+            <input type="text" id="proj-title" placeholder="e.g. Build a 3-bedroom house in DHA Phase 4"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Description <span style="color:var(--red)">*</span></label>
+            <textarea id="proj-desc" rows="4" placeholder="Describe your project in detail. Include scope, specifications, existing drawings, etc."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Type <span style="color:var(--red)">*</span></label>
+            <select id="proj-type">
+              <option value="">Select type...</option>
+              <option value="residential">Residential</option>
+              <option value="commercial">Commercial</option>
+              <option value="renovation">Renovation</option>
+              <option value="industrial">Industrial</option>
+            </select>
+          </div>
+          <div class="step-nav">
+            <div></div>
+            <button class="btn btn-primary" onclick="goStep(2)">Next: Budget & Timeline →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-content" id="step-2">
+          <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:20px">Budget & Timeline</h4>
+          <div class="form-label" style="margin-bottom:8px">Budget Range (PKR)</div>
+          <div class="grid-2" style="margin-bottom:20px">
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label" style="font-size:0.78rem;text-transform:none;letter-spacing:0">Minimum Budget</label>
+              <input type="number" id="budget-min" placeholder="e.g. 500000"/>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label" style="font-size:0.78rem;text-transform:none;letter-spacing:0">Maximum Budget</label>
+              <input type="number" id="budget-max" placeholder="e.g. 1000000"/>
+            </div>
+          </div>
+          <div class="alert alert-info" style="margin-bottom:20px;font-size:0.82rem">
+            ℹ Budget is optional. Leaving it blank allows companies to suggest appropriate pricing.
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Timeline</label>
+            <select id="timeline">
+              <option value="flexible">Flexible</option>
+              <option value="1 month">Within 1 Month</option>
+              <option value="3 months">Within 3 Months</option>
+              <option value="6 months">Within 6 Months</option>
+              <option value="1 year">Within 1 Year</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Urgency</label>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+              <label style="cursor:pointer">
+                <input type="radio" name="urgency" value="low" checked style="display:none" id="urg-low"/>
+                <div class="card" id="urg-low-card" style="text-align:center;padding:12px;border-color:var(--accent);background:var(--accent-dim);cursor:pointer" onclick="selectUrgency('low')">
+                  <div>🟢</div><div style="font-size:0.8rem;margin-top:4px;color:var(--text)">Not Urgent</div>
+                </div>
+              </label>
+              <label style="cursor:pointer">
+                <input type="radio" name="urgency" value="medium" style="display:none"/>
+                <div class="card" id="urg-med-card" style="text-align:center;padding:12px;cursor:pointer" onclick="selectUrgency('medium')">
+                  <div>🟡</div><div style="font-size:0.8rem;margin-top:4px;color:var(--text)">Moderate</div>
+                </div>
+              </label>
+              <label style="cursor:pointer">
+                <input type="radio" name="urgency" value="high" style="display:none"/>
+                <div class="card" id="urg-high-card" style="text-align:center;padding:12px;cursor:pointer" onclick="selectUrgency('high')">
+                  <div>🔴</div><div style="font-size:0.8rem;margin-top:4px;color:var(--text)">Urgent</div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="step-nav">
+            <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+            <button class="btn btn-primary" onclick="goStep(3)">Next: Location →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-content" id="step-3">
+          <h4 style="font-family:var(--font-body);font-weight:700;margin-bottom:20px">Location & Photos</h4>
+          <div class="form-group">
+            <label class="form-label">Project Location <span style="color:var(--red)">*</span></label>
+            <select id="location">
+              <option value="">Select city...</option>
+              <option>Rawalpindi</option>
+              <option>Islamabad</option>
+              <option>Lahore</option>
+              <option>Karachi</option>
+              <option>Faisalabad</option>
+              <option>Multan</option>
+              <option>Peshawar</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Specific Address / Area</label>
+            <input type="text" id="address" placeholder="e.g. DHA Phase 2, Main Boulevard"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Photos (Optional)</label>
+            <div class="upload-zone" onclick="document.getElementById('photo-upload').click()">
+              <input type="file" id="photo-upload" multiple accept="image/*" onchange="handleFiles(this)"/>
+              <div style="font-size:2rem;margin-bottom:8px">📸</div>
+              <div style="font-weight:600;margin-bottom:4px">Click to upload photos</div>
+              <div style="font-size:0.8rem">PNG, JPG up to 5MB each · Max 5 photos</div>
+            </div>
+            <div id="photo-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+          </div>
+
+          <!-- Summary preview -->
+          <div class="alert alert-info" style="margin-bottom:8px">
+            <div>
+              <div style="font-weight:600;margin-bottom:4px">Review your request:</div>
+              <div id="summary" style="font-size:0.82rem;line-height:1.8"></div>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+            <button class="btn btn-primary" onclick="submitQuote()">Post Project →</button>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="step-content" id="step-success">
+          <div class="success-state">
+            <div class="success-icon">🎉</div>
+            <h3 style="font-family:var(--font-body);font-weight:700;font-size:1.4rem;margin-bottom:10px">Project Posted!</h3>
+            <p style="margin-bottom:28px">Your quote request is live. Companies in your area have been notified and will respond soon.</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <a href="quote-detail.html" class="btn btn-primary">View My Request →</a>
+              <a href="dashboard-user.html" class="btn btn-secondary">Go to Dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+let currentStep = 1;
+
+function goStep(step) {
+  // Validate current step
+  if (step > currentStep) {
+    if (currentStep === 1) {
+      if (!document.getElementById('proj-title').value) { showToast('Please enter a project title','error'); return; }
+      if (!document.getElementById('proj-type').value) { showToast('Please select a project type','error'); return; }
+    }
+    if (currentStep === 3 && step > 3) {
+      if (!document.getElementById('location').value) { showToast('Please select a location','error'); return; }
+    }
+  }
+
+  document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
+
+  // Update step indicators
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('step-dot-' + i);
+    if (!dot) continue;
+    const circle = dot.querySelector('.step-circle');
+    dot.classList.remove('active','done');
+    if (i < step) { dot.classList.add('done'); circle.textContent = '✓'; }
+    else if (i === step) { dot.classList.add('active'); circle.textContent = i; }
+    else { circle.textContent = i; }
+    const line = document.getElementById('line-' + i);
+    if (line) line.classList.toggle('done', i < step);
+  }
+
+  // Update summary on step 3
+  if (step === 3) updateSummary();
+  currentStep = step;
+}
+
+function selectUrgency(val) {
+  ['low','med','high'].forEach(u => {
+    const card = document.getElementById('urg-'+u+'-card');
+    if (card) { card.style.borderColor=''; card.style.background=''; }
+  });
+  const selected = document.getElementById('urg-'+val+'-card') || document.getElementById('urg-med-card');
+  if (selected) { selected.style.borderColor='var(--accent)'; selected.style.background='var(--accent-dim)'; }
+}
+
+function updateSummary() {
+  const title = document.getElementById('proj-title').value;
+  const type = document.getElementById('proj-type').value;
+  const min = document.getElementById('budget-min').value;
+  const max = document.getElementById('budget-max').value;
+  const timeline = document.getElementById('timeline').value;
+  const loc = document.getElementById('location').value;
+  const budget = min && max ? `PKR ${Number(min).toLocaleString()} – ${Number(max).toLocaleString()}` : 'Flexible';
+  document.getElementById('summary').innerHTML = `
+    <b>Title:</b> ${title || 'N/A'}<br>
+    <b>Type:</b> ${type || 'N/A'}<br>
+    <b>Budget:</b> ${budget}<br>
+    <b>Timeline:</b> ${timeline}<br>
+    <b>Location:</b> ${loc || 'N/A'}`;
+}
+
+function handleFiles(input) {
+  const preview = document.getElementById('photo-preview');
+  preview.innerHTML = '';
+  [...input.files].slice(0,5).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.createElement('div');
+      img.style.cssText = 'width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--border)';
+      img.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function submitQuote() {
+  if (!document.getElementById('location').value) { showToast('Please select a location','error'); return; }
+  document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-success').classList.add('active');
+  document.getElementById('step-indicator').style.opacity = '0.4';
+  showToast('Quote request posted! Companies will be notified.', 'success');
+}
+</script>
+</body>
+</html>
