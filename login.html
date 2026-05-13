@@ -119,51 +119,50 @@ body { display:flex; flex-direction:column; min-height:100vh; }
 
 <script src="main.js"></script>
 <script>
-// Detect API URL based on where frontend is served from
-const getAPIUrl = () => {
-  const host = window.location.hostname;
-  const port = '5000';
-  return `http://${host}:${port}/api/auth`;
-};
-const API_URL = getAPIUrl();
+const API_URL = "https://craftbase-production-f77a.up.railway.app/api/auth";
 
 async function doLogin() {
-  const email = document.getElementById('email').value;
-  const pass = document.getElementById('password').value;
-  const errorEl = document.getElementById('error-msg');
-  
+  const email    = document.getElementById('email').value.trim();
+  const pass     = document.getElementById('password').value;
+  const errorEl  = document.getElementById('error-msg');
+
   if (!email || !pass) {
     errorEl.textContent = '⚠ Please enter email and password.';
     errorEl.style.display = 'flex';
     return;
   }
-  
+
   try {
     errorEl.style.display = 'none';
+
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password: pass })
     });
-    
+
     const data = await response.json();
-    
+
     if (!response.ok) {
-      errorEl.textContent = `⚠ ${data.message || 'Login failed'}`;
+      errorEl.textContent = `⚠ ${data.message || 'Login failed. Please try again.'}`;
       errorEl.style.display = 'flex';
-      console.error('Login failed:', data);
       return;
     }
-    
+
     // Store token and user data
     localStorage.setItem('craftbase_token', data.token);
     Auth.login(data.user);
     showToast('Logged in successfully!', 'success');
-    
-    const redirects = { USER: 'dashboard-user.html', COMPANY: 'dashboard-company.html', ADMIN: 'dashboard-user.html' };
+
+    const redirects = {
+      USER:    'dashboard-user.html',
+      COMPANY: 'dashboard-company.html',
+      ADMIN:   'dashboard-user.html'
+    };
     setTimeout(() => window.location.href = redirects[data.user.role] || 'dashboard-user.html', 800);
+
   } catch (err) {
-    errorEl.textContent = '⚠ Connection error. Make sure the server is running on port 5000.';
+    errorEl.textContent = '⚠ Could not connect to server. Please try again later.';
     errorEl.style.display = 'flex';
     console.error('Login error:', err);
   }
@@ -171,15 +170,15 @@ async function doLogin() {
 
 async function quickLogin(role) {
   const demos = {
-    USER: { email: 'ahmed@example.com', password: 'password123' },
-    COMPANY: { email: 'apex@example.com', password: 'password123' },
-    ADMIN: { email: 'admin@example.com', password: 'password123' }
+    USER:    { email: 'ahmed@example.com',  password: 'password123' },
+    COMPANY: { email: 'apex@example.com',   password: 'password123' },
+    ADMIN:   { email: 'admin@example.com',  password: 'password123' }
   };
-  
+
   const creds = demos[role];
   if (!creds) return;
-  
-  document.getElementById('email').value = creds.email;
+
+  document.getElementById('email').value    = creds.email;
   document.getElementById('password').value = creds.password;
   doLogin();
 }
