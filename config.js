@@ -10,8 +10,7 @@ const API_CONFIG = {
     // In production (Vercel), use environment variable or your backend URL
     if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
       // Deployed on Vercel or similar
-      // CHANGE THIS to your actual backend URL after deployment
-      return 'https://craftbase-production-7cde.up.railway.app'; // ← UPDATE THIS
+      return 'https://craftbase-production-f77a.up.railway.app';
     }
     // Local development
     return 'http://localhost:5000';
